@@ -68,7 +68,7 @@ public class AdminController extends HttpServlet {
             Admin admin = adminService.login(username, password);
 
             if(admin != null) { //登录成功
-                session.setAttribute("username", username);
+                session.setAttribute("admin", admin);
                 JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("登录成功"));
             } else { //登录失败信息
                 JsonUtil.toJSON(response.getOutputStream(), RespBean.error("登录失败"));
