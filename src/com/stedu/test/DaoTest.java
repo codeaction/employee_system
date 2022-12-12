@@ -3,8 +3,12 @@ package com.stedu.test;
 import com.stedu.bean.Page;
 import com.stedu.dao.EmployeeDao;
 import com.stedu.dao.impl.EmployeeDaoImpl;
+import com.stedu.utils.JdbcUtil;
 import com.stedu.utils.PageUtil;
 import org.junit.Test;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class DaoTest {
     @Test
