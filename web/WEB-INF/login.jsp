@@ -89,12 +89,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-block btn-primary" type="button" onclick="login()">立即登录</button>
+                    <button class="btn btn-block btn-info" type="button" onclick="login()">立即登录</button>
                 </div>
             </form>
             <hr>
             <footer class="col-sm-12 text-center">
-                <p class="m-b-0">Copyright © 2019 <a href="http://lyear.itshubao.com">IT书包</a>. All right reserved</p>
+                <p class="m-b-0">Copyright © 2022 <a href="https://guide.code2048.tech">Code2048</a>. All right reserved</p>
             </footer>
         </div>
     </div>

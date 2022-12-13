@@ -21,16 +21,14 @@
                 <li class="nav-item nav-item-has-subnav active">
                     <a href="javascript:void(0)"><i class="mdi mdi-account-multiple"></i>员工管理</a>
                     <ul class="nav nav-subnav">
-                        <li><a href="/admin/toEmployee">人员管理</a></li>
-                        <li><a href="/admin/toDepartment">部门管理</a></li>
+                        <li><a href="admin/toEmployee">人员管理</a></li>
+                        <li><a href="admin/toDepartment">部门管理</a></li>
                     </ul>
                 </li>
             </ul>
         </nav>
         <div class="sidebar-footer">
-            <p class="copyright">Copyright &copy; 2019. <a target="_blank"
-                                                           href="http://lyear.itshubao.com">IT书包</a> All rights
-                reserved.</p>
+            <p class="copyright">Copyright © 2022 <a href="https://guide.code2048.tech">Code2048</a>. All right reserved</p>
         </div>
     </div>
 
