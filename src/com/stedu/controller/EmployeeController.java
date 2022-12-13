@@ -24,7 +24,7 @@ public class EmployeeController extends HttpServlet {
 
         //创建Page对象
         long count = employeeService.count();
-        Page page = PageUtil.createPage(10, (int) count, currentPage);
+        Page page = PageUtil.createPage(3, (int) count, currentPage);
 
         page = employeeService.findByPage(page);
         JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("查询成功", page));

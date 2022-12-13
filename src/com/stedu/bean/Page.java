@@ -10,6 +10,7 @@ public class Page<T> {
 	private int beginIndex; // 查询起始点
 	private boolean hasPrePage; // 是否有上一页
 	private boolean hasNextPage; // 是否有下一页
+	private int[] navigation; // 导航
 	private List<T> list;//用来保存分页数据
 	
 	public List<T> getList() {
@@ -21,7 +22,7 @@ public class Page<T> {
 	}
 
 	public Page(int everyPage, int totalCount, int totalPage, int currentPage, int beginIndex, boolean hasPrePage,
-			boolean hasNextPage) { // 自定义构造方法
+			boolean hasNextPage, int[] navigation) { // 自定义构造方法
 		this.everyPage = everyPage;
 		this.totalCount = totalCount;
 		this.totalPage = totalPage;
@@ -29,6 +30,7 @@ public class Page<T> {
 		this.beginIndex = beginIndex;
 		this.hasPrePage = hasPrePage;
 		this.hasNextPage = hasNextPage;
+		this.navigation = navigation;
 	}
 
 	public Page() {
@@ -88,5 +90,9 @@ public class Page<T> {
 
 	public void setHasNextPage(boolean hasNextPage) {// 设置是否有下一页
 		this.hasNextPage = hasNextPage;
+	}
+
+	public int[] getNavigation() {
+		return navigation;
 	}
 }

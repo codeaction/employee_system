@@ -14,7 +14,8 @@ public class PageUtil {
 		int beginIndex = getBeginIndex(everyPage, currentPage);
 		boolean hasPrePage = getHasPrePage(currentPage);
 		boolean hasNextPage = getHasNextPage(totalPage, currentPage);
-		return new Page(everyPage, totalCount, totalPage, currentPage, beginIndex, hasPrePage, hasNextPage);
+		int[] navigation = getNavigation(totalPage, currentPage);
+		return new Page(everyPage, totalCount, totalPage, currentPage, beginIndex, hasPrePage, hasNextPage, navigation);
 	}
 
 	public static int getEveryPage(int everyPage) {// 获得每页显示记录数
@@ -45,5 +46,25 @@ public class PageUtil {
 
 	public static boolean getHasNextPage(int totalPage, int currentPage) { // 获得是否有上一页
 		return currentPage == totalPage || totalPage == 0 ? false : true;
+	}
+
+	public static int[] getNavigation(int totalPage, int currentPage) {
+		int[] navigation = null;
+
+		if(totalPage <= 5) {
+			navigation = new int[totalPage];
+			for (int i = 0; i < navigation.length; i++) {
+				navigation[i] = i + 1;
+			}
+		} else {
+			navigation = new int[5];
+			int start = currentPage <= 3 ? 1 : currentPage - 2;
+			start = totalPage - start < 5 ? totalPage - 4 : start;
+			for(int i = 0; i < 5; i++) {
+				navigation[i] = start + i;
+			}
+		}
+
+		return navigation;
 	}
 }
