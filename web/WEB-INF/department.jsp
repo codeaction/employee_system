@@ -85,6 +85,39 @@
     </div>
 </div>
 
+<!-- 修改模态框 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改部门</h4>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm" class="form-horizontal" action="#" method="post" onsubmit="return false;">
+                    <input type="hidden" id="didUpdate" />
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="dnameUpdate">部门名称</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" id="dnameUpdate" placeholder="请输入部门名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="dlocationUpdate">部门位置</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" id="dlocationUpdate" placeholder="请输入部门位置">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary btn-info btn-sm" onclick="update()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
@@ -111,7 +144,7 @@
                 <td>{{$value.dname}}</td>
                 <td>{{$value.dlocation}}</td>
                 <td style="width: 110px;">
-                    <button class="btn btn-xs btn-primary btn-success">修改</button>
+                    <button class="btn btn-xs btn-primary btn-success" onclick="findById('{{$value.did}}')">修改</button>
                     <button class="btn btn-xs btn-primary btn-danger">删除</button>
                 </td>
             </tr>
@@ -120,6 +153,50 @@
     </table>
 </script>
 <script type="text/javascript">
+    //根据id查询, 并显示修改模态框
+    function findById(did) {
+        $.ajax({
+            type: "POST",
+            url: "admin/Department?action=findById",
+            data: {did:did},
+            dataType: "json",
+            success: (resp) => {
+                //设置回填数据
+                $("#didUpdate").val(resp.data.did);
+                $("#dnameUpdate").val(resp.data.dname);
+                $("#dlocationUpdate").val(resp.data.dlocation);
+                //显示修改模态框
+                $("#updateModal").modal('show');
+            }
+        })
+    }
+    
+    //修改部门
+    function update() {
+        lightyear.loading('show');
+        $.ajax({
+            type: "POST",
+            url: "admin/Department?action=update",
+            data: {did:$("#didUpdate").val(), dname:$("#dnameUpdate").val(), dlocation:$("#dlocationUpdate").val()},
+            dataType: "json",
+            success: (resp) => {
+                lightyear.loading('hide');
+                if(resp.code == 10000) {
+                    //隐藏模态框
+                    $("#updateModal").modal('hide');
+                    $("#updateForm")[0].reset();
+                    //显示通知
+                    lightyear.notify('修改成功', 'success', 1000, 'mdi mdi-emoticon-happy', 'top', 'center');
+                    //查询所有
+                    findAll();
+                } else {
+                    lightyear.notify(resp.msg, 'danger', 1000, 'mdi mdi-emoticon-sad', 'top', 'center');
+                }
+                
+            }
+        });
+    }
+    
     //显示新增模态框
     function showAddModals() {
         $("#addModal").modal("show");
@@ -144,7 +221,7 @@
                     //查询所有
                     findAll();
                 } else {
-                    lightyear.notify('部门名称重复，添加失败', 'warning', 1000, 'mdi mdi-emoticon-sad', 'top', 'center');
+                    lightyear.notify('部门名称重复，添加失败', 'danger', 1000, 'mdi mdi-emoticon-sad', 'top', 'center');
                 }
             }
         })
@@ -160,7 +237,6 @@
                 // console.log(resp);
                 //resp.data是返回的数据，将服务器返回的数据在模板中渲染
                 let html = template('all_department', {data:resp.data});
-                console.log(html);
                 //将渲染完成的数据挂载在页面上
                 $('#class_table').html(html);
             }

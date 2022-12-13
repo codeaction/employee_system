@@ -24,4 +24,20 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department findByName(String dname) {
         return departmentDao.findByName(dname);
     }
+
+    @Override
+    public Department findById(String did) {
+        return departmentDao.findById(did);
+    }
+
+    @Override
+    public int update(Department department) {
+        //判断修改之后的名字是否和其他项的名字相同
+        Department d = departmentDao.findByName(department.getDname());
+        if(d != null && d.getDid() != department.getDid()) {
+            return -1;
+        }
+
+        return departmentDao.update(department);
+    }
 }

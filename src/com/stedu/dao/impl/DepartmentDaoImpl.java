@@ -55,4 +55,36 @@ public class DepartmentDaoImpl implements DepartmentDao {
         }
         return department;
     }
+
+    @Override
+    public Department findById(String did) {
+        String sql = "select * from `department` where `did`=?";
+        Object[] params = {did};
+
+        Department department = null;
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+        try {
+            department = qr.query(sql, new BeanHandler<Department>(Department.class), params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return department;
+    }
+
+    @Override
+    public int update(Department department) {
+        String sql = "update `department` set `dname`=?, `dlocation`=? where `did`=?";
+        Object[] params = {department.getDname(), department.getDlocation(), department.getDid()};
+        int result = 0;
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+        try {
+            result = qr.update(sql, params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return result;
+    }
 }
