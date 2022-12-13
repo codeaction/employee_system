@@ -1,6 +1,7 @@
 package com.stedu.dao.impl;
 
 import com.stedu.bean.Employee;
+import com.stedu.bean.EmployeeVo;
 import com.stedu.bean.Page;
 import com.stedu.dao.EmployeeDao;
 import com.stedu.utils.JdbcUtil;
@@ -28,19 +29,35 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public Page<Employee> findByPage(Page<Employee> page) {
-        String sql = "select * from `employee` limit ?, ?";
+    public Page<EmployeeVo> findByPage(Page<EmployeeVo> page) {
+        String sql = "select e.*, d.dname from `employee` e, `department` d where e.did=d.did  limit ?, ?";
         Object[] params = {page.getBeginIndex(), page.getEveryPage()};
-        List<Employee> list = null;
+        List<EmployeeVo> list = null;
 
         QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
         try {
-            list = qr.query(sql, new BeanListHandler<Employee>(Employee.class), params);
+            list = qr.query(sql, new BeanListHandler<EmployeeVo>(EmployeeVo.class), params);
             page.setList(list);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
         return page;
+    }
+
+    @Override
+    public List<Employee> findByDid(Integer did) {
+        String sql = "select * from `employee` where `did`=?";
+        Object[] params = {did};
+        List<Employee> list = null;
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+        try {
+            list = qr.query(sql, new BeanListHandler<Employee>(Employee.class), params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
     }
 }

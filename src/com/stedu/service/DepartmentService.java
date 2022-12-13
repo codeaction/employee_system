@@ -10,4 +10,5 @@ public interface DepartmentService {
     Department findByName(String dname);
     Department findById(String did);
     int update(Department department);
+    int del(Integer did);
 }

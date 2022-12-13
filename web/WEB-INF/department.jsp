@@ -11,6 +11,8 @@
     <meta name="author" content="yinqi">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/materialdesignicons.min.css" rel="stylesheet">
+    <!--对话框-->
+    <link rel="stylesheet" href="js/jconfirm/jquery-confirm.min.css">
     <link href="css/style.min.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
 </head>
@@ -39,7 +41,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="table-responsive col-md-6" id="class_table">
+                                    <div class="table-responsive col-md-6" id="department_table">
                                         <!-- 此处放置表格 -->
                                     </div>
                                 </div>
@@ -117,16 +119,17 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
-<script type="text/javascript" src="js/func.js"></script>
+<script type="text/javascript" src="js/func.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/template-web.js"></script>
 <!--消息提示-->
 <script src="js/bootstrap-notify.min.js"></script>
 <script type="text/javascript" src="js/lightyear.js"></script>
-<script type="text/javascript" src="js/template-web.js"></script>
+<!--对话框-->
+<script src="js/jconfirm/jquery-confirm.min.js"></script>
 <script type="text/html" id="all_department">
     <table class="table table-bordered table-hover">
         <thead>
@@ -134,7 +137,7 @@
                 <th>部门编号</th>
                 <th>部门名称</th>
                 <th>部门位置</th>
-                <th colspan="2">操作</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
@@ -145,7 +148,7 @@
                 <td>{{$value.dlocation}}</td>
                 <td style="width: 110px;">
                     <button class="btn btn-xs btn-primary btn-success" onclick="findById('{{$value.did}}')">修改</button>
-                    <button class="btn btn-xs btn-primary btn-danger">删除</button>
+                    <button class="btn btn-xs btn-primary btn-danger" onclick="showDelConfirm('{{$value.did}}')">删除</button>
                 </td>
             </tr>
             {{/each}}
@@ -153,11 +156,45 @@
     </table>
 </script>
 <script type="text/javascript">
+    //弹出删除确认框
+    function showDelConfirm(did) {
+        $.alert({
+            title: '删除确认',
+            content: '您确定要删除该',
+            buttons: {
+                confirm: {
+                    text: '确认',
+                    btnClass: 'btn-primary',
+                    action: function(){
+                        $.ajax({
+                            type: "POST",
+                            url: "admin/department?action=del",
+                            data: {did:did},
+                            dataType: "json",
+                            success: (resp) => {
+                                if(resp.code == '10000') {
+                                    //显示通知
+                                    lightyear.notify('删除成功', 'success', 1000, 'mdi mdi-emoticon-happy', 'top', 'center');
+                                    //刷新表格
+                                    findAll()
+                                } else {
+                                    lightyear.notify(resp.msg, 'danger', 1000, 'mdi mdi-emoticon-sad', 'top', 'center');
+                                }
+                            }
+                        })
+                    }
+                },
+                cancel: {
+                    text: '取消',
+                }
+            }
+        });
+    }
     //根据id查询, 并显示修改模态框
     function findById(did) {
         $.ajax({
             type: "POST",
-            url: "admin/Department?action=findById",
+            url: "admin/department?action=findById",
             data: {did:did},
             dataType: "json",
             success: (resp) => {
@@ -176,7 +213,7 @@
         lightyear.loading('show');
         $.ajax({
             type: "POST",
-            url: "admin/Department?action=update",
+            url: "admin/department?action=update",
             data: {did:$("#didUpdate").val(), dname:$("#dnameUpdate").val(), dlocation:$("#dlocationUpdate").val()},
             dataType: "json",
             success: (resp) => {
@@ -207,7 +244,7 @@
         lightyear.loading('show');
         $.ajax({
             type: "POST",
-            url: "admin/Department?action=add",
+            url: "admin/department?action=add",
             data: {dname:$("#dnameAdd").val(), dlocation:$("#dlocationAdd").val()},
             dataType: "json",
             success: (resp) => {
@@ -231,14 +268,14 @@
     function findAll() {
         $.ajax({
             type: "GET",
-            url: "admin/Department?action=findAll",
+            url: "admin/department?action=findAll",
             dataType: "json",
             success: (resp) => {
                 // console.log(resp);
                 //resp.data是返回的数据，将服务器返回的数据在模板中渲染
                 let html = template('all_department', {data:resp.data});
                 //将渲染完成的数据挂载在页面上
-                $('#class_table').html(html);
+                $('#department_table').html(html);
             }
         })
     }

@@ -87,4 +87,20 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
         return result;
     }
+
+    @Override
+    public int del(Integer did) {
+        String sql = "delete from `department` where `did`=?";
+        Object[] params = {did};
+        int result = 0;
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+        try {
+            result = qr.update(sql, params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return result;
+    }
 }

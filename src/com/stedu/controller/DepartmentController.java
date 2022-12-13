@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "DepartmentController", value = "/admin/Department")
+@WebServlet(name = "DepartmentController", value = "/admin/department")
 public class DepartmentController extends HttpServlet {
     private DepartmentService departmentService = new DepartmentServiceImpl();
 
@@ -65,7 +65,19 @@ public class DepartmentController extends HttpServlet {
         } else {
             JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("修改成功"));
         }
+    }
 
+    protected void del(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //获取请求参数
+        String didStr = request.getParameter("did");
+        Integer did = Integer.parseInt(didStr);
+
+        //删除部门
+        if (departmentService.del(did) == -1) {
+            JsonUtil.toJSON(response.getOutputStream(), RespBean.error("该部门存在员工，不允许删除该部门"));
+        } else {
+            JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("删除成功"));
+        }
     }
 
     @Override
@@ -84,6 +96,9 @@ public class DepartmentController extends HttpServlet {
                 break;
             case "update":
                 update(request, response);
+                break;
+            case "del":
+                del(request,response);
                 break;
         }
     }

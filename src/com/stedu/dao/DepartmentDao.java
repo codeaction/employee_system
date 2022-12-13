@@ -15,4 +15,6 @@ public interface DepartmentDao {
     Department findById(String did);
     //根据部门ID修改
     int update(Department department);
+    //根据部门ID删除
+    int del(Integer did);
 }

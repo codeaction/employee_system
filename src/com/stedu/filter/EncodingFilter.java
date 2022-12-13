@@ -23,19 +23,14 @@ public class EncodingFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         String requestURI = request.getRequestURI();
 
-        if(requestURI.contains(".css")||requestURI.contains(".js")) {
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");//这样会把CSS文件和JS文件转化为html文件,但是在if中排除了
-            filterChain.doFilter(request, response);
-        } else {
-            request.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html;charset=UTF-8");//这样会把CSS文件和JS文件转化为html文件,但是在if中排除了
-            filterChain.doFilter(request, response);
+        //设置请求编码
+        request.setCharacterEncoding("UTF-8");
+        //设置响应编码, 但是要排除css和js
+        if(!requestURI.endsWith(".css") && !requestURI.endsWith(".js")) {
+            response.setContentType("text/html;charset=UTF-8");
         }
-        //servletRequest.setCharacterEncoding("UTF-8");
-        //servletResponse.setContentType("text/html;charset=utf-8");
-        //
-        //filterChain.doFilter(servletRequest,servletResponse);
+
+        filterChain.doFilter(servletRequest,servletResponse);
     }
 
     @Override

@@ -1,14 +1,18 @@
 package com.stedu.service.impl;
 
 import com.stedu.bean.Department;
+import com.stedu.bean.Employee;
 import com.stedu.dao.DepartmentDao;
+import com.stedu.dao.EmployeeDao;
 import com.stedu.dao.impl.DepartmentDaoImpl;
+import com.stedu.dao.impl.EmployeeDaoImpl;
 import com.stedu.service.DepartmentService;
 
 import java.util.List;
 
 public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentDao departmentDao = new DepartmentDaoImpl();
+    private EmployeeDao employeeDao = new EmployeeDaoImpl();
 
     @Override
     public List<Department> findAll() {
@@ -39,5 +43,15 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         return departmentDao.update(department);
+    }
+
+    @Override
+    public int del(Integer did) {
+        List<Employee> employeeList = employeeDao.findByDid(did);
+        if(employeeList.size() > 0) {
+            return -1;
+        }
+
+        return departmentDao.del(did);
     }
 }
