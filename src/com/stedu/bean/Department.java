@@ -24,6 +24,21 @@ public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Department() {
+
+    }
+
+    public Department(String dname, String dlocation) {
+        this.dname = dname;
+        this.dlocation = dlocation;
+    }
+
+    public Department(Integer did, String dname, String dlocation) {
+        this.did = did;
+        this.dname = dname;
+        this.dlocation = dlocation;
+    }
+
     /**
      * 主键
      */

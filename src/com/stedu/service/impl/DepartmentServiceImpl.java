@@ -14,4 +14,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> findAll() {
         return departmentDao.findAll();
     }
+
+    @Override
+    public int add(Department department) {
+        return departmentDao.add(department);
+    }
+
+    @Override
+    public Department findByName(String dname) {
+        return departmentDao.findByName(dname);
+    }
 }

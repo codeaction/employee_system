@@ -21,6 +21,24 @@ public class DepartmentController extends HttpServlet {
         JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("查询成功", departmentList));
     }
 
+    protected void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //获取请求参数
+        String dname = request.getParameter("dname");
+        String dlocation = request.getParameter("dlocation");
+
+        Department department = departmentService.findByName(dname);
+        if(department != null) { //部门名重复不允许添加
+            JsonUtil.toJSON(response.getOutputStream(), RespBean.error("部门名称重复，添加失败"));
+        } else {
+            department = new Department(dname, dlocation);
+            departmentService.add(department);
+
+            JsonUtil.toJSON(response.getOutputStream(),RespBean.ok("添加成功"));
+        }
+
+
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -28,6 +46,9 @@ public class DepartmentController extends HttpServlet {
         switch (action) {
             case "findAll": //查询所有
                 findAll(request, response);
+                break;
+            case "add": //添加
+                add(request, response);
                 break;
         }
     }

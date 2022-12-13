@@ -12,6 +12,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/materialdesignicons.min.css" rel="stylesheet">
     <link href="css/style.min.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
 </head>
 
 <body data-theme="dark">
@@ -28,7 +29,7 @@
                         <div class="card">
                             <div class="card-toolbar clearfix">
                                 <div class="toolbar-btn-action">
-                                    <button class="btn btn-primary btn-cyan btn-label btn-sm">
+                                    <button class="btn btn-primary btn-cyan btn-label btn-sm" onclick="showAddModals()">
                                         <label>
                                             <i class="mdi mdi-plus"></i>
                                         </label>
@@ -52,11 +53,46 @@
     </div>
 </div>
 
+<!-- 添加模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加部门</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addForm" class="form-horizontal" action="#" method="post" onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="dnameAdd">部门名称</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" id="dnameAdd" placeholder="请输入部门名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="dlocationAdd">部门位置</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" id="dlocationAdd" placeholder="请输入部门位置">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary btn-info btn-sm" onclick="add()">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
 <script type="text/javascript" src="js/func.js"></script>
+<!--消息提示-->
+<script src="js/bootstrap-notify.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
 <script type="text/javascript" src="js/template-web.js"></script>
 <script type="text/html" id="all_department">
     <table class="table table-bordered table-hover">
@@ -84,12 +120,43 @@
     </table>
 </script>
 <script type="text/javascript">
+    //显示新增模态框
+    function showAddModals() {
+        $("#addModal").modal("show");
+    }
+    
+    //添加部门
+    function add() {
+        lightyear.loading('show');
+        $.ajax({
+            type: "POST",
+            url: "admin/Department?action=add",
+            data: {dname:$("#dnameAdd").val(), dlocation:$("#dlocationAdd").val()},
+            dataType: "json",
+            success: (resp) => {
+                lightyear.loading('hide');
+                if(resp.code == 10000) {
+                    //隐藏模态框
+                    $("#addModal").modal('hide');
+                    $("#addForm")[0].reset();
+                    //显示通知
+                    lightyear.notify('添加成功', 'success', 1000, 'mdi mdi-emoticon-happy', 'top', 'center');
+                    //查询所有
+                    findAll();
+                } else {
+                    lightyear.notify('部门名称重复，添加失败', 'warning', 1000, 'mdi mdi-emoticon-sad', 'top', 'center');
+                }
+            }
+        })
+    }
+    
+    //查询所有部门
     function findAll() {
         $.ajax({
             type: "GET",
             url: "admin/Department?action=findAll",
             dataType: "json",
-            success: function (resp) {
+            success: (resp) => {
                 // console.log(resp);
                 //resp.data是返回的数据，将服务器返回的数据在模板中渲染
                 let html = template('all_department', {data:resp.data});
