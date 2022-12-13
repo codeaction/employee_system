@@ -17,7 +17,7 @@
 
         <nav class="sidebar-main">
             <ul class="nav nav-drawer">
-                <li class="nav-item"><a href="/admin/toIndex"><i class="mdi mdi-home"></i> 后台首页</a></li>
+                <li class="nav-item"><a href="admin/toIndex"><i class="mdi mdi-home"></i> 后台首页</a></li>
                 <li class="nav-item nav-item-has-subnav active">
                     <a href="javascript:void(0)"><i class="mdi mdi-account-multiple"></i>员工管理</a>
                     <ul class="nav nav-subnav">
@@ -64,6 +64,5 @@
             </ul>
         </div>
     </nav>
-
 </header>
 <!--End 头部信息-->

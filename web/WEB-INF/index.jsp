@@ -43,5 +43,12 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/func.js"></script>
+<script>
+    $(function () {
+        //展开左侧菜单，设置头部标题
+        setLeftAndTop("a[href='admin/toIndex']");
+    })
+</script>
 </body>
 </html>
