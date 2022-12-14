@@ -23,11 +23,9 @@ public class LoginFilter implements Filter {
 	private FilterConfig config = null;
 
     public LoginFilter() {
-        // TODO Auto-generated constructor stub
     }
 
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
