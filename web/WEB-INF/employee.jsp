@@ -243,7 +243,6 @@
 				$("#addModal").modal('show');
 			}
 		})
-		
 	}
 	
 	//分页查询
@@ -266,7 +265,6 @@
 	$(function () {
 		//展开左侧菜单，设置头部标题
 		setLeftAndTop("a[href='admin/toEmployee']");
-		
 		//查询首页
 		findByPage(1);
 	});
