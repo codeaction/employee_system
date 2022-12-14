@@ -115,19 +115,19 @@
         let username = $("#username").val();
         let password = $("#password").val();
         let verificationCode = $("#verificationCode").val();
+        lightyear.loading('show');
         $.ajax({
             url: "login",
             type: "POST",
             data: {username:username,password:password,verificationCode:verificationCode},
             dataType: "json",
             success: function (resp) {
-                lightyear.loading('show');
                 if(resp.code == 10000) {
                     lightyear.loading('hide');
-                    lightyear.notify('登录成功，页面即将自动跳转~', 'success', 2000, 'mdi mdi-emoticon-happy', 'top', 'center' , 'admin/toIndex');
+                    lightyear.notify('登录成功，页面即将自动跳转~', 'success', 100, 'mdi mdi-emoticon-happy', 'top', 'center' , 'admin/toIndex');
                 } else {
                     lightyear.loading('hide');
-                    lightyear.notify(resp.msg, 'danger', 2000, 'mdi mdi-emoticon-sad', 'top', 'center');
+                    lightyear.notify(resp.msg, 'danger', 1000, 'mdi mdi-emoticon-sad', 'top', 'center');
                 }
             }
         })

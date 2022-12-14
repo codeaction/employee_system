@@ -60,7 +60,7 @@
 								</div>
 							</div>
 							<div class="card-body">
-								<div class="table-responsive" id="employee_table">
+								<div class="table-responsive text-center" id="employee_table">
 									<!-- 在此次放置表格 -->
 								</div>
 							</div>
@@ -125,14 +125,27 @@
 		{{/each}}
 		</tbody>
 	</table>
-	<ul class="pagination">
-		<li class="disabled"><span>«</span></li>
-		<%--<li class="active"><span>1</span></li>--%>
-		{{each data.navigation}}
-			<li><a href="#1">{{$value}}</a></li>
-		{{/each}}
-		<li><a href="#!">»</a></li>
-	</ul>
+	<nav>
+		<ul class="pagination pagination-circle">
+			{{if data.currentPage == 1}}
+				<li class="disabled"><span><i class="mdi mdi-chevron-left"></i></span></li>
+			{{else}}
+				<li onclick="findByPage('{{data.currentPage-1}}')"><a href="javascript:void(0);"><span><i class="mdi mdi-chevron-left"></i></span></a></li>
+			{{/if}}
+			{{each data.navigation}}
+				{{if $value == data.currentPage}}
+					<li class="active"><span>{{$value}}</span></li>
+				{{else}}
+					<li onclick="findByPage('{{$value}}')"><a href="javascript:void(0);">{{$value}}</a></li>
+				{{/if}}
+			{{/each}}
+			{{if data.currentPage == data.totalPage}}
+				<li class="disabled"><span><i class="mdi mdi-chevron-right"></i></span></li>
+			{{else}}
+				<li onclick="findByPage('{{data.currentPage+1}}')"><a href="javascript:void(0);"><span><i class="mdi mdi-chevron-right"></i></span></a></li>
+			{{/if}}
+		</ul>
+	</nav>
 </script>
 <script type="text/javascript">
 	//分页查询
