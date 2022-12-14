@@ -86,6 +86,7 @@
         </div>
     </div>
 </div>
+<!-- 添加模态框 -->
 
 <!-- 修改模态框 -->
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -119,6 +120,7 @@
         </div>
     </div>
 </div>
+<!-- 修改模态框 -->
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>

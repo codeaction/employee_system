@@ -14,6 +14,8 @@
 	<link href="css/style.min.css" rel="stylesheet">
 	<!--对话框-->
 	<link rel="stylesheet" href="js/jconfirm/jquery-confirm.min.css">
+	<!--日期选择插件-->
+	<link rel="stylesheet" href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
 </head>
 
 <body data-theme="dark">
@@ -52,11 +54,12 @@
 									</div>
 								</form>
 								<div class="toolbar-btn-action">
-									<a class="btn btn-primary m-r-5" href="#!"><i class="mdi mdi-plus"></i> 新增</a>
-									<a class="btn btn-success m-r-5" href="#!"><i class="mdi mdi-check"></i> 启用</a>
-									<a class="btn btn-warning m-r-5" href="#!"><i class="mdi mdi-block-helper"></i>
-										禁用</a>
-									<a class="btn btn-danger" href="#!"><i class="mdi mdi-window-close"></i> 删除</a>
+									<button class="btn btn-primary btn-info btn-label btn-sm" onclick="showAddModals()">
+										<label>
+											<i class="mdi mdi-plus"></i>
+										</label>
+										新增
+									</button>
 								</div>
 							</div>
 							<div class="card-body">
@@ -73,6 +76,75 @@
 	</div>
 </div>
 
+<!-- 添加模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">添加员工</h4>
+			</div>
+			<div class="modal-body">
+				<form id="addForm" class="form-horizontal" action="#" method="post" onsubmit="return false;">
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="enameAdd">姓名</label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="enameAdd" placeholder="请输入姓名">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="eageAdd">年龄</label>
+						<div class="col-md-9">
+							<input class="form-control" type="number" id="eageAdd" placeholder="请输入年龄">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">性别</label>
+						<div class="col-sm-10">
+							<label class="lyear-radio radio-inline radio-primary">
+								<input type="radio" name="egender" value="男" checked="checked"><span>男</span>
+							</label>
+							<label class="lyear-radio radio-inline radio-primary">
+								<input type="radio" name="egender" value="女"><span>女</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="ejob">职务</label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="ejob" placeholder="请输入职务">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="eentrydate">入职日期</label>
+						<div class="col-md-9">
+							<input class="form-control js-datepicker m-b-10" type="text" id="eentrydate" name="example-datepicker" placeholder="请选择入职日期" value="" data-date-format="yyyy-mm-dd" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="esalary">薪资</label>
+						<div class="col-md-9">
+							<input class="form-control" type="number" id="esalary" placeholder="请输入薪资">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="did">所在部门</label>
+						<div class="col-md-9">
+							<select class="form-control" type="number" id="did">
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary btn-info btn-sm" onclick="add()">添加</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 添加模态框 -->
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
@@ -81,6 +153,9 @@
 <!--对话框-->
 <script src="js/jconfirm/jquery-confirm.min.js"></script>
 <script src="js/template-web.js"></script>
+<!--日期选择插件-->
+<script src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 <script type="text/html" id="all_employee">
 	<table class="table table-bordered table-hover">
 		<thead>
@@ -147,7 +222,30 @@
 		</ul>
 	</nav>
 </script>
+<script type="text/html" id="all_department">
+	<option disabled hidden selected>--请选择--</option>
+	{{each data}}
+	<option value="{{$value.did}}">{{$value.dname}}</option>
+	{{/each}}
+</script>
 <script type="text/javascript">
+	//显示添加模态框
+	function showAddModals() {
+		//获取所有部门
+		$.ajax({
+			type: "GET",
+			url: "admin/department?action=findAll",
+			dataType: "json",
+			success: (resp) => {
+				let html = template('all_department', {data:resp.data});
+				//将渲染完成的数据挂载在页面上
+				$('#did').html(html);
+				$("#addModal").modal('show');
+			}
+		})
+		
+	}
+	
 	//分页查询
 	function findByPage(currentPage) {
 		$.ajax({
