@@ -53,18 +53,6 @@ public class JdbcUtil {
         tl.set(connection);
     }
 
-    public static void beginTransactionSerializable() throws SQLException {
-        Connection connection = tl.get();
-        if(connection != null) { //当前已经开启事务了
-            throw new SQLException("当前已经处于事务中，不能重复开启事务");
-        }
-
-        connection = getConnection();
-        connection.setAutoCommit(false);
-        connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-        tl.set(connection);
-    }
-
     //提交事务
     public static void commitTransaction() throws SQLException {
         Connection connection = tl.get();

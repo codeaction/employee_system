@@ -64,4 +64,10 @@ public class DaoTest {
         EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
         employeeService.add(e);
     }
+
+    @Test
+    public void test5() {
+        EmployeeDao employeeDao = new EmployeeDaoImpl();
+        employeeDao.chgEstate(31,1);
+    }
 }

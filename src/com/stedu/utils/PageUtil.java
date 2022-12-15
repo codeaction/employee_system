@@ -9,8 +9,8 @@ import com.stedu.bean.Page;
 public class PageUtil {
 	public static Page createPage(int everyPage, int totalCount, int currentPage) {// 创建分页信息对象
 		everyPage = getEveryPage(everyPage);
-		currentPage = getCurrentPage(currentPage);
 		int totalPage = getTotalPage(everyPage, totalCount);
+		currentPage = getCurrentPage(currentPage, totalPage);
 		int beginIndex = getBeginIndex(everyPage, currentPage);
 		boolean hasPrePage = getHasPrePage(currentPage);
 		boolean hasNextPage = getHasNextPage(totalPage, currentPage);
@@ -22,8 +22,11 @@ public class PageUtil {
 		return everyPage == 0 ? 10 : everyPage;
 	}
 
-	public static int getCurrentPage(int currentPage) { // 获得当前页
-		return currentPage == 0 ? 1 : currentPage;
+	public static int getCurrentPage(int currentPage, int totalPage) { // 获得当前页
+		currentPage = currentPage == 0 ? 1 : currentPage;
+		currentPage = currentPage < 0 ? totalPage : currentPage;
+		currentPage = currentPage > totalPage ? totalPage : currentPage;
+		return currentPage;
 	}
 
 	public static int getTotalPage(int everyPage, int totalCount) {// 获得总页数

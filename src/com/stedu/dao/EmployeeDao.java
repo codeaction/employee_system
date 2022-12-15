@@ -12,10 +12,17 @@ public interface EmployeeDao {
     String maxEno() throws SQLException;
     //添加员工
     void add(Employee employee) throws SQLException;
+    //修改员工状态
+    int chgEstate(Integer eid, Integer estate);
+    //修改员工
+    int update(Employee employee);
     //查询员工个数
     long count();
     //分页查询
     Page<EmployeeVo> findByPage(Page<EmployeeVo> page);
     //根据部门ID查询员工
     List<Employee> findByDid(Integer did);
+    //根据员工编号查询员工
+    Employee findById(Integer eid);
+
 }

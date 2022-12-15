@@ -162,7 +162,7 @@
     function showDelConfirm(did) {
         $.alert({
             title: '删除确认',
-            content: '您确定要删除该',
+            content: '您确定要删除该部门吗?',
             buttons: {
                 confirm: {
                     text: '确认',

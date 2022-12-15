@@ -16,7 +16,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void add(Employee employee) {
         try {
-            JdbcUtil.beginTransactionSerializable();
+            JdbcUtil.beginTransaction();
             String maxNo = employeeDao.maxEno();
             maxNo = (Integer.parseInt(maxNo) + 1) + "";
             employee.setEno(maxNo);
@@ -33,6 +33,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public int chgEstate(Integer eid, Integer estate) {
+        return employeeDao.chgEstate(eid, estate);
+    }
+
+    @Override
     public long count() {
         return employeeDao.count();
     }
@@ -40,5 +45,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Page<EmployeeVo> findByPage(Page<EmployeeVo> page) {
         return employeeDao.findByPage(page);
+    }
+
+    @Override
+    public Employee findById(Integer eid) {
+        return employeeDao.findById(eid);
+    }
+
+    @Override
+    public int update(Employee e) {
+        return employeeDao.update(e);
     }
 }

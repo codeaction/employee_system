@@ -1,5 +1,7 @@
 package com.stedu.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -42,6 +44,7 @@ public class Employee implements Serializable {
     /**
      * 入职时间
      */
+    @JsonFormat(pattern = "yyyy年MM月dd日")
     private Date eentrydate;
 
     /**

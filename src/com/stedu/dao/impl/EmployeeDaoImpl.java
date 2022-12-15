@@ -6,6 +6,7 @@ import com.stedu.bean.Page;
 import com.stedu.dao.EmployeeDao;
 import com.stedu.utils.JdbcUtil;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
@@ -29,6 +30,39 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
         QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
         qr.update(JdbcUtil.getConnection(), sql, params);
+    }
+
+    @Override
+    public int chgEstate(Integer eid, Integer estate) {
+        String sql = "update `employee` set `estate`=? where `eid`=?";
+        Object[] params = {estate, eid};
+        int result = 0;
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+
+        try {
+            result = qr.update(sql, params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public int update(Employee e) {
+        String sql = "update `employee` set `ename`=?, `eage`=?, `egender`=?, `ejob`=?, `eentrydate`=?, `esalary`=?, `did`=? where `eid`=?";
+        Object[] params = {e.getEname(), e.getEage(), e.getEgender(), e.getEjob(), new Date(e.getEentrydate().getTime()), e.getEsalary(), e.getDid(), e.getEid()};
+        int result = 0;
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+        try {
+            result = qr.update(JdbcUtil.getConnection(), sql, params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override
@@ -77,5 +111,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
 
         return list;
+    }
+
+    @Override
+    public Employee findById(Integer eid) {
+        String sql = "select * from `employee` where `eid`=?";
+        Object[] params = {eid};
+        Employee employee = null;
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+        try {
+            employee = qr.query(sql, new BeanHandler<Employee>(Employee.class), params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return employee;
     }
 }
