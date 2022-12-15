@@ -63,8 +63,8 @@
     </style>
 </head>
 
-<body>
-<div class="row lyear-wrapper" style="background-image: url(images/login-bg.jpg); background-size: cover;">
+<body data-theme="dark">
+<div class="row lyear-wrapper" style="background-image: url(images/012.jpg); background-size: cover;">
     <div class="lyear-login">
         <div class="login-center">
             <div class="login-header text-center">
