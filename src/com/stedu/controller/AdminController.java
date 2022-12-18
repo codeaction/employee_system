@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "AdminController", value = {"/login", "/logout", "/verificationCode"})
+@WebServlet(name = "AdminController", value = {"/login", "/logout", "/verificationCode", "/admin/chgpwd"})
 public class AdminController extends HttpServlet {
     private AdminService adminService = new AdminServiceImpl();
 
@@ -32,6 +32,9 @@ public class AdminController extends HttpServlet {
                 break;
             case "/verificationCode": //获取验证码
                 verificationCode(request,response);
+                break;
+            case "/admin/chgpwd":
+                chgpwd(request, response);
                 break;
         }
     }
@@ -85,5 +88,16 @@ public class AdminController extends HttpServlet {
 
         //重定向到登录页
         response.sendRedirect(request.getContextPath() + "/toLogin");
+    }
+
+    //修改密码
+    protected void chgpwd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //获取请求参数
+        String id = request.getParameter("id");
+        String pwd = request.getParameter("pwd");
+
+        adminService.chgpwd(id, pwd);
+
+        JsonUtil.toJSON(response.getOutputStream(),RespBean.ok("修改成功"));
     }
 }

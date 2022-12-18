@@ -26,4 +26,17 @@ public class AdminDaoImpl implements AdminDao {
 
         return admin;
     }
+
+    @Override
+    public void chgpwd(String id, String pwd) {
+        String sql = "update `admin` set `password`=? where `id`=?";
+        Object[] params = {pwd, id};
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+        try {
+            qr.update(sql,params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }

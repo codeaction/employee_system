@@ -12,4 +12,9 @@ public class AdminServiceImpl implements AdminService {
     public Admin login(String username, String password) {
         return adminDao.findByUsernameAndPassword(username, password);
     }
+
+    @Override
+    public void chgpwd(String id, String pwd) {
+        adminDao.chgpwd(id, pwd);
+    }
 }
