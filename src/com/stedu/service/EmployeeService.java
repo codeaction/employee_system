@@ -10,9 +10,9 @@ public interface EmployeeService {
     //删除员工
     int chgEstate(Integer eid, Integer estate);
     //查询员工个数
-    long count();
+    long count(String searchName);
     //分页查询
-    Page<EmployeeVo> findByPage(Page<EmployeeVo> page);
+    Page<EmployeeVo> findByPage(Page<EmployeeVo> page, String searchName);
     //根据员工编号查询员工
     Employee findById(Integer eid);
     //修改员工

@@ -18,14 +18,15 @@ public class DaoTest {
     @Test
     public void test1() {
         EmployeeDao employeeDao = new EmployeeDaoImpl();
-        System.out.println(employeeDao.count());
+        System.out.println(employeeDao.count("a"));
     }
 
     @Test
     public void test2() {
         EmployeeDao employeeDao = new EmployeeDaoImpl();
-        Page page = PageUtil.createPage(21, 21, 1);
-        Page p = employeeDao.findByPage(page);
+        long count = employeeDao.count("a");
+        Page page = PageUtil.createPage(5, (int)count, 1);
+        Page p = employeeDao.findByPage(page, "a");
         p.getList().stream().forEach(System.out::println);
 
         System.out.println(Arrays.toString(page.getNavigation()));

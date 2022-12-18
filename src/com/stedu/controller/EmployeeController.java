@@ -28,12 +28,13 @@ public class EmployeeController extends HttpServlet {
         //获取请求参数
         String currentPageStr = request.getParameter("currentPage");
         int currentPage = Integer.parseInt(currentPageStr);
+        String searchName = request.getParameter("searchName");
 
         //创建Page对象
-        long count = employeeService.count();
+        long count = employeeService.count(searchName);
         Page page = PageUtil.createPage(5, (int) count, currentPage);
 
-        page = employeeService.findByPage(page);
+        page = employeeService.findByPage(page, searchName);
         JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("查询成功", page));
     }
 

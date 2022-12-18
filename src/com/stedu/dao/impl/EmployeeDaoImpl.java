@@ -12,6 +12,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -66,13 +67,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public long count() {
-        String sql = "select count(1) from `employee`";
+    public long count(String searchName) {
+        String sql = "select count(1) from `employee` where 1=1";
+        Object[] params = null;
+        if(!searchName.equals("") && !(searchName == null)) {
+            sql = sql + " and `ename` like ?";
+            params = new Object[]{"%" + searchName + "%"};
+        }
+
         QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
         long count = 0;
 
         try {
-            count = qr.query(sql, new ScalarHandler<Long>());
+            count = qr.query(sql, new ScalarHandler<Long>(), params);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -81,14 +88,22 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public Page<EmployeeVo> findByPage(Page<EmployeeVo> page) {
-        String sql = "select e.*, d.dname from `employee` e, `department` d where e.did=d.did  limit ?, ?";
-        Object[] params = {page.getBeginIndex(), page.getEveryPage()};
+    public Page<EmployeeVo> findByPage(Page<EmployeeVo> page, String searchName) {
+        String sql = "select e.*, d.dname from `employee` e, `department` d where e.did=d.did and 1=1";
+        ArrayList<Object> objectList = new ArrayList<>();
+        if(!searchName.equals("") && !(searchName == null)) {
+            sql = sql + " and `ename` like ?";
+            objectList.add("%" + searchName + "%");
+        }
+        sql = sql + " limit ?, ?";
+
+        objectList.add(page.getBeginIndex());
+        objectList.add(page.getEveryPage());
         List<EmployeeVo> list = null;
 
         QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
         try {
-            list = qr.query(sql, new BeanListHandler<EmployeeVo>(EmployeeVo.class), params);
+            list = qr.query(sql, new BeanListHandler<EmployeeVo>(EmployeeVo.class), objectList.toArray());
             page.setList(list);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

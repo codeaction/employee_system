@@ -38,13 +38,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public long count() {
-        return employeeDao.count();
+    public long count(String searchName) {
+        return employeeDao.count(searchName);
     }
 
     @Override
-    public Page<EmployeeVo> findByPage(Page<EmployeeVo> page) {
-        return employeeDao.findByPage(page);
+    public Page<EmployeeVo> findByPage(Page<EmployeeVo> page, String searchName) {
+        return employeeDao.findByPage(page, searchName);
     }
 
     @Override

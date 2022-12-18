@@ -17,9 +17,9 @@ public interface EmployeeDao {
     //修改员工
     int update(Employee employee);
     //查询员工个数
-    long count();
+    long count(String searchName);
     //分页查询
-    Page<EmployeeVo> findByPage(Page<EmployeeVo> page);
+    Page<EmployeeVo> findByPage(Page<EmployeeVo> page, String searchName);
     //根据部门ID查询员工
     List<Employee> findByDid(Integer did);
     //根据员工编号查询员工
