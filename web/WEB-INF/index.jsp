@@ -31,7 +31,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>欢迎使用员工管理系统</h1>
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="font: italic normal 60px 仿宋;" class="text-center">欢迎使用员工管理系统</div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

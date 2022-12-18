@@ -23,6 +23,7 @@
                     <ul class="nav nav-subnav">
                         <li><a href="admin/toEmployee">人员管理</a></li>
                         <li><a href="admin/toDepartment">部门管理</a></li>
+                        <li><a href="admin/toProject">项目管理</a></li>
                     </ul>
                 </li>
             </ul>

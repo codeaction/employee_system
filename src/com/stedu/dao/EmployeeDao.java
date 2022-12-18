@@ -24,5 +24,6 @@ public interface EmployeeDao {
     List<Employee> findByDid(Integer did);
     //根据员工编号查询员工
     Employee findById(Integer eid);
-
+    //根据项目编号查询员工
+    List<Employee> findByProjectId(Integer pid);
 }

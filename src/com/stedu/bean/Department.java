@@ -1,6 +1,8 @@
 package com.stedu.bean;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 部门表
@@ -21,6 +23,11 @@ public class Department implements Serializable {
      * 部门位置
      */
     private String dlocation;
+
+    /**
+    * 部门员工
+    */
+    private List<Employee> emps;
 
     private static final long serialVersionUID = 1L;
 
@@ -81,44 +88,40 @@ public class Department implements Serializable {
         this.dlocation = dlocation;
     }
 
+    /**
+     * 部门员工
+     */
+    public List<Employee> getEmps() {
+        return emps;
+    }
+
+    /**
+     * 部门员工
+     */
+    public void setEmps(List<Employee> emps) {
+        this.emps = emps;
+    }
+
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        Department other = (Department) that;
-        return (this.getDid() == null ? other.getDid() == null : this.getDid().equals(other.getDid()))
-            && (this.getDname() == null ? other.getDname() == null : this.getDname().equals(other.getDname()))
-            && (this.getDlocation() == null ? other.getDlocation() == null : this.getDlocation().equals(other.getDlocation()));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return Objects.equals(did, that.did) && Objects.equals(dname, that.dname) && Objects.equals(dlocation, that.dlocation) && Objects.equals(emps, that.emps);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getDid() == null) ? 0 : getDid().hashCode());
-        result = prime * result + ((getDname() == null) ? 0 : getDname().hashCode());
-        result = prime * result + ((getDlocation() == null) ? 0 : getDlocation().hashCode());
-        return result;
+        return Objects.hash(did, dname, dlocation, emps);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", did=").append(did);
-        sb.append(", dname=").append(dname);
-        sb.append(", dlocation=").append(dlocation);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "Department{" +
+                "did=" + did +
+                ", dname='" + dname + '\'' +
+                ", dlocation='" + dlocation + '\'' +
+                ", emps=" + emps +
+                '}';
     }
 }

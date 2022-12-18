@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface DepartmentService {
     List<Department> findAll();
+    List<Department> findAllWithEmployee();
     int add(Department department);
     Department findByName(String dname);
     Department findById(String did);

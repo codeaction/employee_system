@@ -24,6 +24,12 @@ public class DepartmentController extends HttpServlet {
         JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("查询成功", departmentList));
     }
 
+    //查询所有包括员工
+    protected void findAllWithEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Department> departmentList = departmentService.findAllWithEmployee();
+        JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("查询成功", departmentList));
+    }
+
     //查询所有
     protected void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //获取请求参数
@@ -87,6 +93,9 @@ public class DepartmentController extends HttpServlet {
         switch (action) {
             case "findAll": //查询所有
                 findAll(request, response);
+                break;
+            case "findAllWithEmployee": //查询所有
+                findAllWithEmployee(request, response);
                 break;
             case "add": //添加
                 add(request, response);

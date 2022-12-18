@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * 负责页面跳转
  */
-@WebServlet(name = "PageController", value = {"/toLogin", "/admin/toIndex", "/admin/toEmployee", "/admin/toDepartment"})
+@WebServlet(name = "PageController", value = {"/toLogin", "/admin/toIndex", "/admin/toEmployee", "/admin/toDepartment", "/admin/toProject"})
 public class PageController extends HttpServlet {
 
     @Override
@@ -29,6 +29,9 @@ public class PageController extends HttpServlet {
                 break;
             case "/admin/toDepartment": //去部门管理页面
                 request.getRequestDispatcher("/WEB-INF/department.jsp").forward(request,response);
+                break;
+            case "/admin/toProject": //去项目管理页面
+                request.getRequestDispatcher("/WEB-INF/project.jsp").forward(request,response);
                 break;
         }
     }

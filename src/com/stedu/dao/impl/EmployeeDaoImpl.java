@@ -143,4 +143,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
         return employee;
     }
+
+    @Override
+    public List<Employee> findByProjectId(Integer pid) {
+        String sql = "SELECT e.* FROM `project` p, `project_employee` pe, `employee` e WHERE p.`pid`=pe.`pid` AND pe.`eid`=e.`eid` and p.pid=?";
+        Object[] params = {pid};
+
+        QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+
+        List<Employee> list = null;
+        try {
+            list = qr.query(sql, new BeanListHandler<Employee>(Employee.class), params);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return list;
+    }
 }

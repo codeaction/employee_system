@@ -20,6 +20,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public List<Department> findAllWithEmployee() {
+        //查询所有部门
+        List<Department> departmentList = departmentDao.findAll();
+        for (Department department : departmentList) {
+            department.setEmps(employeeDao.findByDid(department.getDid()));
+        }
+        return departmentList;
+    }
+
+    @Override
     public int add(Department department) {
         return departmentDao.add(department);
     }
