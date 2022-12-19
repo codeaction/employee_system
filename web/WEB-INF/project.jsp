@@ -204,7 +204,7 @@
                 <td>{{$value.pdescription}}</td>
                 <td style="width: 110px;">
                     <button class="btn btn-xs btn-primary btn-success">修改</button>
-                    <button class="btn btn-xs btn-primary btn-danger">删除</button>
+                    <button class="btn btn-xs btn-primary btn-danger" onclick="showDelConfirm('{{$value.pid}}')">删除</button>
                 </td>
             </tr>
             {{/each}}
@@ -221,8 +221,37 @@
     {{/each}}
 </script>
 <script type="text/javascript">
-    function tests() {
-        console.log($("#tests").val());
+    //显示确认删除提示框
+    function showDelConfirm(pid) {
+        $.alert({
+            title: '删除确认',
+            content: '您确定要删除该项目吗?',
+            buttons: {
+                confirm: {
+                    text: '确认',
+                    btnClass: 'btn-primary',
+                    action: function(){
+                        $.ajax({
+                            type: "POST",
+                            url: "admin/project?action=del",
+                            data: {pid:pid},
+                            dataType: "json",
+                            success: (resp) => {
+                                if(resp.code == '10000') {
+                                    //显示通知
+                                    lightyear.notify('删除成功', 'success', 1000, 'mdi mdi-emoticon-happy', 'top', 'center');
+                                    //刷新表格
+                                    findAll();
+                                }
+                            }
+                        })
+                    }
+                },
+                cancel: {
+                    text: '取消',
+                }
+            }
+        });
     }
     //添加
     function add() {

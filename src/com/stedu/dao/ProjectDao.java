@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProjectDao {
     List<Project> findAll();
     Long add(Project project) throws SQLException;
+    void del(Integer pid) throws SQLException;
 }

@@ -53,4 +53,23 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
     }
+
+    @Override
+    public void del(Integer pid) {
+        try {
+            JdbcUtil.beginTransaction();
+            //删除项目员工关系
+            projectEmployeeDao.del(pid);
+            //删除项目
+            projectDao.del(pid);
+            JdbcUtil.commitTransaction();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            try {
+                JdbcUtil.rollbackTransaction();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

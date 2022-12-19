@@ -38,4 +38,13 @@ public class ProjectDaoImpl implements ProjectDao {
         //获取插入的主键
         return (Long)qr.insert(JdbcUtil.getConnection(), sql,new ScalarHandler<>(), params);
     }
+
+    @Override
+    public void del(Integer pid) throws SQLException {
+        String sql = "delete from `project` where `pid`=?";
+        Object[] params = {pid};
+
+        QueryRunner qr = new QueryRunner();
+        qr.update(JdbcUtil.getConnection(), sql, params);
+    }
 }

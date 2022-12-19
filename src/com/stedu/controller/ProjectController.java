@@ -56,6 +56,17 @@ public class ProjectController extends HttpServlet {
         JsonUtil.toJSON(response.getOutputStream(),RespBean.ok("添加成功"));
     }
 
+    //删除项目
+    protected void del(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //获取请求参数
+        String pidStr = request.getParameter("pid");
+        Integer pid = Integer.parseInt(pidStr);
+        //删除项目
+        projectService.del(pid);
+        //返回数据
+        JsonUtil.toJSON(response.getOutputStream(), RespBean.ok("删除成功"));
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -65,6 +76,9 @@ public class ProjectController extends HttpServlet {
                 break;
             case "add":
                 add(request,response);
+                break;
+            case "del":
+                del(request,response);
                 break;
         }
     }
