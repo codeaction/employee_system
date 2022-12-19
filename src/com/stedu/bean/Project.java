@@ -149,6 +149,18 @@ public class Project implements Serializable {
         this.emps = emps;
     }
 
+    public Project() {
+    }
+
+
+    public Project(String pname, Date pstart, Date pend, Integer pprogress, String pdescription) {
+        this.pname = pname;
+        this.pstart = pstart;
+        this.pend = pend;
+        this.pprogress = pprogress;
+        this.pdescription = pdescription;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

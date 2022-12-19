@@ -312,11 +312,9 @@
 				lightyear.loading('hide');
 				if(resp.code == 10000) {
 					//隐藏模态框
-					$("#addModal").modal('hide');
-					$("#addForm")[0].reset();
-					lightyear.notify('修改成功', 'success', 1000, 'mdi mdi-emoticon-happy', 'top', 'center');
-					//隐藏模态框
 					$("#updateModal").modal('hide');
+					$("#updateForm")[0].reset();
+					lightyear.notify('修改成功', 'success', 1000, 'mdi mdi-emoticon-happy', 'top', 'center');
 					//去当前页
 					findByPage($("#currentPage").val());
 				}

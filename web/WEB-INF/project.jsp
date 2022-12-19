@@ -66,7 +66,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">添加部门</h4>
+                <h4 class="modal-title">添加部门</h4>
             </div>
             <div class="modal-body">
                 <form id="addForm" class="form-horizontal" action="#" method="post" onsubmit="return false;">
@@ -97,7 +97,7 @@
                     <div class="form-group">
                         <label class="col-md-2 control-label" for="pdescriptionAdd">项目描述</label>
                         <div class="col-md-9">
-                            <input class="form-control" type="text" id="pdescriptionAdd" placeholder="请输入项目名称">
+                            <input class="form-control" type="text" id="pdescriptionAdd" placeholder="请输入项目描述">
                         </div>
                     </div>
                     <div class="form-group">
@@ -221,9 +221,38 @@
     {{/each}}
 </script>
 <script type="text/javascript">
+    function tests() {
+        console.log($("#tests").val());
+    }
     //添加
     function add() {
         console.log($("#all_employee_add").val());
+        lightyear.loading('show');
+        $.ajax({
+            type: "POST",
+            url: "admin/project?action=add",
+            data: {pname:$("#pnameAdd").val(),
+                pstart:$("#pstartAdd").val(),
+                pend:$("#pendAdd").val(),
+                pprogress:$("#pprogressAdd").val(),
+                pdescription:$("#pdescriptionAdd").val(),
+                eids:$("#all_employee_add").val()
+            },
+            dataType: "json",
+            success: (resp) => {
+                lightyear.loading('hide');
+                if(resp.code == 10000) {
+                    //隐藏模态框
+                    $("#addModal").modal('hide');
+                    //重置表单
+                    $("#addForm")[0].reset();
+                    //弹出提示信息
+                    lightyear.notify('添加成功', 'success', 1000, 'mdi mdi-emoticon-happy', 'top', 'center');
+                    //查询所有
+                    findAll();
+                }
+            }
+        });
     }
     //显示新增模态框
     function showAddModal() {
@@ -232,15 +261,15 @@
             url: "admin/department?action=findAllWithEmployee",
             dataType: "json",
             success: (resp) => {
+                //将返回的数据渲染成html
                 let html = template('all_deptwithemps', {data:resp.data});
                 //将渲染完成的数据挂载在页面上
                 $('#all_employee_add').html(html);
-                //设置select为多选
+                //设置select为多选 - 折叠的
                 $('#all_employee_add').multiselect({
                     enableCollapsibleOptGroups: true,
                     collapseOptGroupsByDefault: true,
                 });
-                //$('#all_employee_add').multiselect('select', ['4', '6']);
                 
                 //设置滑块
                 $("#pprogressAdd").ionRangeSlider({
@@ -248,8 +277,7 @@
                     max: 100,
                     from: 0
                 });
-    
-                $("#all_employee_add").val(['4', '5'])
+                
                 //显示模态框
                 $("#addModal").modal('show')
             }

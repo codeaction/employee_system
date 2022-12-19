@@ -9,6 +9,7 @@ import com.stedu.dao.impl.EmployeeDaoImpl;
 import com.stedu.service.DepartmentService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentDao departmentDao = new DepartmentDaoImpl();
@@ -23,9 +24,17 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> findAllWithEmployee() {
         //查询所有部门
         List<Department> departmentList = departmentDao.findAll();
-        for (Department department : departmentList) {
-            department.setEmps(employeeDao.findByDid(department.getDid()));
-        }
+        departmentList = departmentList.stream()
+                .map(item -> {
+                    //查询部门对应的员工
+                    List<Employee> emps = employeeDao.findByDid(item.getDid());
+                    //去除离职员工
+                    emps = emps.stream()
+                            .filter(emp -> emp.getEstate() == 1)
+                            .collect(Collectors.toList());
+                    item.setEmps(emps);
+                    return item;
+                }).filter(item -> item.getEmps().size() > 0).collect(Collectors.toList());
         return departmentList;
     }
 
